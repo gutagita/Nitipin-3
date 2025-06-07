@@ -1,0 +1,752 @@
+
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menu Resto</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="main.css">
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9ffff;
+    }
+
+    /* === NAVIGATION === */
+    .navmenu {
+      background-color: #ffffffee;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .navmenu ul {
+      list-style: none;
+      margin: 0;
+      padding: 15px 20px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .navmenu ul li a {
+      text-decoration: none;
+      color: #207c7d;
+      font-weight: 600;
+      padding: 8px 12px;
+      transition: 0.3s;
+    }
+
+    .navmenu ul li a:hover,
+    .navmenu ul li a.active {
+      background-color: #3ba99c;
+      color: white;
+      border-radius: 5px;
+    }
+
+    .mobile-nav-toggle {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #207c7d;
+    }
+
+    @media (max-width: 768px) {
+      .navmenu ul {
+        flex-direction: column;
+        display: none;
+        background-color: white;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+      }
+
+      .navmenu ul.show {
+        display: flex;
+      }
+
+      .mobile-nav-toggle {
+        display: block;
+        position: absolute;
+        right: 20px;
+        top: 18px;
+      }
+    }
+
+    .hero {
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      padding: 100px 20px 60px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: url('/assets/img/nitipin/stuff-bg.jpg') top center no-repeat;
+      background-size: cover;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.1);
+      z-index: 0;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 56px;
+      color: black;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero p {
+      color: #207c7d;
+      margin: 5px 0 30px 0;
+      font-size: 20px;
+      font-weight: 400;
+      position: relative;
+      z-index: 1;
+    }
+
+    .lead.text-light {
+      font-size: 1.25rem;
+      color: #207c7d;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 5);
+    }
+
+    .hero .animated {
+      animation: up-down 2s ease-in-out infinite alternate-reverse both;
+    }
+
+    @keyframes up-down {
+      0% { transform: translateY(10px); }
+      100% { transform: translateY(-10px); }
+    }
+
+    @media (max-width: 640px) {
+      .hero h1 {
+        font-size: 28px;
+        line-height: 36px;
+      }
+      .hero p {
+        font-size: 18px;
+        line-height: 24px;
+        margin-bottom: 30px;
+      }
+    }
+
+    .kategori {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .kategori button {
+      background-color: #f9ffff;
+      border: none;
+      padding: 10px 15px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .kategori button.active,
+    .kategori button:hover {
+      background-color: #3ba99c;
+      color: white;
+    }
+
+    .menu-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 0 20px 40px 20px;
+    }
+
+    .menu-item {
+      width: 250px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      background-color: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .menu-item img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .menu-item h4 {
+      margin: 10px 0 5px;
+    }
+
+    .menu-item p {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <header id="header" class="header d-flex align-items-center fixed-top">
+      <div class="container d-flex align-items-center justify-content-between">
+        
+        <!-- Logo -->
+        <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+          <h1 class="sitename">Nitipin</h1><span>.</span>
+        </a>
+    
+        <!-- Menu Navigasi -->
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="#hero" class="active">Home</a></li>
+            <li><a href="#features">Benefit</a></li>
+            <li><a href="/small.html">Categories</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#order">Order</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+  
+          </ul>
+          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+        <!-- Tombol -->
+        <a class="btn-getstarted" href="/login/login.html">Login</a>
+      </div>
+    </header>
+    <main id="main">
+      <section id="hero" class="hero d-flex align-items-center" style="height: 80px;">
+        <div class="container">
+          <h1>Kategori Nitipin</h1>
+        </div>
+      </section>
+  </header>
+ <main>
+    <!-- === NAVIGATION === -->
+    <nav id="navmenu" class="navmenu">
+      <ul id="nav-links">
+        <li><a href="#hero" class="active">Home</a></li>
+        <li><a href="#features">Benefit</a></li>
+        <li><a href="/small.html">Categories</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#order">Order</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+      </ul>
+      <i class="mobile-nav-toggle bi bi-list" onclick="toggleMenu()"></i>
+    </nav>
+  
+    <!-- === HERO SECTION === -->
+    <div id="hero" class="hero">
+      <div class="content animated">
+        <h1>Selamat Datang di Menu Resto</h1>
+        <p class="lead text-light">Nikmati berbagai pilihan hidangan terbaik kami</p>
+      </div>
+    </div>
+  
+    <h2 style="text-align:center;">Pilih Kategori</h2>
+    <div class="kategori">
+      <button class="active" onclick="filterMenu('all')">Semua</button>
+      <button onclick="filterMenu('hidangan-pembuka')">Hidangan Pembuka</button>
+      <button onclick="filterMenu('hidangan-utama')">Hidangan Utama</button>
+      <button onclick="filterMenu('hidangan-penutup')">Hidangan Penutup</button>
+    </div>
+  
+    <div class="menu-container">
+      <div class="menu-item hidangan-pembuka">
+        <img src="https://source.unsplash.com/250x150/?salad" alt="Salad">
+        <h4>Salad Buah</h4>
+        <p>Segar dan sehat dengan dressing spesial.</p>
+      </div>
+  
+      <div class="menu-item hidangan-utama">
+        <img src="https://source.unsplash.com/250x150/?satay" alt="Sate">
+        <h4>Sate Plecing</h4>
+        <p>Daging lezat dengan sambal khas lombok.</p>
+      </div>
+  
+      <div class="menu-item hidangan-utama">
+        <img src="https://source.unsplash.com/250x150/?chicken-soup" alt="Ayam">
+        <h4>Sup Ayam</h4>
+        <p>Hangat dan cocok untuk semua cuaca.</p>
+      </div>
+  
+      <div class="menu-item hidangan-penutup">
+        <img src="https://source.unsplash.com/250x150/?dessert" alt="Dessert">
+        <h4>Pudding Coklat</h4>
+        <p>Lembut dan manis, penutup yang sempurna.</p>
+      </div>
+    </div>
+  
+    <script>
+      function filterMenu(category) {
+        const items = document.querySelectorAll('.menu-item');
+        const buttons = document.querySelectorAll('.kategori button');
+  
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+  
+        items.forEach(item => {
+          if (category === 'all' || item.classList.contains(category)) {
+            item.classList.remove('hidden');
+          } else {
+            item.classList.add('hidden');
+          }
+        });
+
+
+
+
+        
+      }
+  
+      function toggleMenu() {
+        document.querySelector('#nav-links').classList.toggle('show');
+      }
+    </script>
+ </main>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Nitipin - Landing Page</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Raleway:300,400,500,700" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+
+
+  <!-- info kontak -->
+  <div class="row gy-4">
+    <div class="col-md-6">
+      <div class="info-item" data-aos="fade" data-aos-delay="200">
+        <i class="bi bi-geo-alt"></i>
+        <h3>Address</h3>
+        <p>A108 Adam Street</p>
+        <p>New York, NY 535022</p>
+      </div>
+    </div><!-- End Info Item -->
+
+    <div class="col-md-6">
+      <div class="info-item" data-aos="fade" data-aos-delay="300">
+        <i class="bi bi-telephone"></i>
+        <h3>Call Us</h3>
+        <p>+1 5589 55488 55</p>
+        <p>+1 6678 254445 41</p>
+      </div>
+    </div><!-- End Info Item -->
+
+    <div class="col-md-6">
+      <div class="info-item" data-aos="fade" data-aos-delay="400">
+        <i class="bi bi-envelope"></i>
+        <h3>Email Us</h3>
+        <p>info@example.com</p>
+        <p>contact@example.com</p>
+      </div>
+    </div><!-- End Info Item -->
+
+    <div class="col-md-6">
+      <div class="info-item" data-aos="fade" data-aos-delay="500">
+        <i class="bi bi-clock"></i>
+        <h3>Open Hours</h3>
+        <p>Monday - Friday</p>
+        <p>9:00AM - 05:00PM</p>
+      </div>
+    </div><!-- End Info Item -->
+
+  </div>
+
+<header id="header" class="fixed-top">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <a href="index.html" class="logo d-flex align-items-center">
+      <img src="assets/img/logo.png" alt="Logo">
+      <span>Nitipin</span>
+    </a>
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto active" href="#hero">Beranda</a></li>
+        <li><a class="nav-link scrollto" href="#fitur">Fitur</a></li>
+        <li><a class="nav-link scrollto" href="#tentang">Tentang</a></li>
+        <li><a class="nav-link scrollto" href="#kontak">Kontak</a></li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav>
+  </div>
+</header>
+
+<section id="hero" class="d-flex align-items-center">
+  <div class="container text-center">
+    <h1>Selamat datang di Nitipin</h1>
+    <h2>Solusi Titip Barang dengan Aman dan Nyaman</h2>
+    <a href="#fitur" class="btn btn-primary mt-3">Jelajahi</a>
+  </div>
+</section>
+
+<section id="fitur" class="py-5">
+  <div class="container">
+    <div class="section-title text-center mb-5">
+      <h2>Fitur Kami</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4 text-center">
+        <img src="assets/img/gambar/kardus.png" class="img-fluid mb-3" alt="Fitur 1">
+        <h4>Kardus Penyimpanan</h4>
+        <p>Penyimpanan aman dengan kardus berkualitas.</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <img src="assets/img/gambar/jemput.png" class="img-fluid mb-3" alt="Fitur 2">
+        <h4>Layanan Jemput</h4>
+        <p>Barang dijemput langsung dari lokasi Anda.</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <img src="assets/img/gambar/tracking.png" class="img-fluid mb-3" alt="Fitur 3">
+        <h4>Tracking Real-time</h4>
+        <p>Lacak barang Anda kapan saja, di mana saja.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tentang" class="py-5 bg-light">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6 mb-4 mb-md-0">
+        <h2>Tentang Nitipin</h2>
+        <p>Nitipin adalah layanan penitipan barang modern yang mengutamakan keamanan, kecepatan, dan kemudahan. Kami hadir untuk membantu Anda menyimpan barang dengan tenang.</p>
+      </div>
+      <div class="col-md-6">
+        <img src="assets/img/gambar/about.png" class="img-fluid" alt="Tentang Kami">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="kontak" class="py-5">
+  <div class="container">
+    <div class="section-title text-center mb-5">
+      <h2>Kontak Kami</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="ratio ratio-16x9">
+          <iframe src="https://maps.google.com/maps?q=Universitas%20Airlangga&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="col-md-6 d-flex flex-column justify-content-center">
+        <p><strong>Alamat:</strong> Universitas Airlangga, Surabaya</p>
+        <p><strong>Email:</strong> support@nitipin.id</p>
+        <p><strong>Telepon:</strong> 0821-1234-5678</p>
+        <a href="https://wa.me/6287885757435" target="_blank" class="btn btn-success w-100">
+          <i class="bi bi-whatsapp"></i> Whatsapp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="bg-dark text-white py-4 text-center">
+  <div class="container">
+    &copy; 2025 <strong>Nitipin</strong>. Semua Hak Dilindungi.
+  </div>
+</footer>
+
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+
+
+
+<section id="sampul" class="sampul section bg-custom mx-auto px-auto">
+  <div class="container">
+    <div class="row">
+      <div id="order_shape" class="col-lg-12 text-center p-5 bg-white shadow rounded text-center">
+        <h2>Kategori Nitipin</h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<h2 style="text-align:center;">Pilih Kategori</h2>
+<div class="kategori">
+  <button class="active" onclick="filterMenu('all')">Semua</button>
+  <button onclick="filterMenu('hidangan-pembuka')">Hidangan Pembuka</button>
+  <button onclick="filterMenu('hidangan-utama')">Hidangan Utama</button>
+  <button onclick="filterMenu('hidangan-penutup')">Hidangan Penutup</button>
+</div>
+
+<div class="menu-container">
+  <div class="menu-item hidangan-pembuka">
+    <img src="https://source.unsplash.com/250x150/?salad" alt="Salad">
+    <h4>Salad Buah</h4>
+    <p>Segar dan sehat dengan dressing spesial.</p>
+  </div>
+
+  <div class="menu-item hidangan-utama">
+    <img src="https://source.unsplash.com/250x150/?satay" alt="Sate">
+    <h4>Sate Plecing</h4>
+    <p>Daging lezat dengan sambal khas lombok.</p>
+  </div>
+
+  <div class="menu-item hidangan-utama">
+    <img src="https://source.unsplash.com/250x150/?chicken-soup" alt="Ayam">
+    <h4>Sup Ayam</h4>
+    <p>Hangat dan cocok untuk semua cuaca.</p>
+  </div>
+
+  <div class="menu-item hidangan-penutup">
+    <img src="https://source.unsplash.com/250x150/?dessert" alt="Dessert">
+    <h4>Pudding Coklat</h4>
+    <p>Lembut dan manis, penutup yang sempurna.</p>
+  </div>
+</div>
+
+<script>
+  function filterMenu(category) {
+    const items = document.querySelectorAll('.menu-item');
+    const buttons = document.querySelectorAll('.kategori button');
+
+    // Aktifkan tombol yang ditekan
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    // Tampilkan/ sembunyikan item
+    items.forEach(item => {
+      if (category === 'all' || item.classList.contains(category)) {
+        item.classList.remove('hidden');
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+  }
+</script>
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Nitipin</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+  
+    <!-- Favicons -->
+    <link href="assets/img/blog/logobiru.png" rel="icon">
+  
+    
+  
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  
+    <!-- Main CSS File -->
+    <link href="assets/css/main.css" rel="stylesheet">
+  
+    <!-- =======================================================
+    * Template Name: FlexStart
+    * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
+    * Updated: Nov 01 2024 with Bootstrap v5.3.3
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+  </head>
+<body>
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container d-flex align-items-center justify-content-between">
+      
+      <!-- Logo -->
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+        <h1 class="sitename">Nitipin</h1><span>.</span>
+      </a>
+  
+      <!-- Menu Navigasi -->
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="#hero" class="active">Home</a></li>
+          <li><a href="#features">Benefit</a></li>
+          <li><a href="/small.html">Categories</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#order">Order</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <!-- Tombol -->
+      <a class="btn-getstarted" href="/login/login.html">Login</a>
+    </div>
+  </header>
+<main>
+    <!-- Hero Section -->
+    <section id="sampul" class="sampul section  py-5">
+      <!-- <img src="assets/img/team/beck.jpg" alt="" data-aos="fade-in"> -->
+      <div class="container">
+        <div class="row justify-content-center text-center">
+          <div class="col-lg-10 col-md-12">
+            <h2 class="display-5 fw-bold mb-3" data-aos="fade-up" data-aos-delay="100">Welcome to Our Website</h2>
+            <p   class="lead text-light" data-aos="fade-up" data-aos-delay="200">We are team of talented designers making websites with Bootstrap</p>
+          </div>
+        </div>
+      </div>
+    </section><!-- /Hero Section -->
+
+    <!-- kategori -->
+    <section id="kategori" class="kategori section">
+      <div class="container">
+        <div class="row justify-content-center text-center">
+          <div class="col-lg-10 col-md-12">
+            <h2 class="px-auto mt-4 mb-4" style="text-align:center;">Pilih Kategori</h2>
+            <p   class="lead text-light" data-aos="fade-up" data-aos-delay="200">Pilih kategori yang sesuai dengan kebutuhan Anda</p>
+            <div class="kategori">
+              <button class="active" onclick="filterMenu('all')">Semua</button>
+              <button onclick="filterMenu('small')">Small</button>
+              <button onclick="filterMenu('medium')">Medium</button>
+              <button onclick="filterMenu('large')">Large</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    
+    <div class="menu-container">
+      <div class="menu-item small">
+        <img src="/assets/img/clients/client-1.png" alt="Salad">
+        <h4>Buku</h4>
+        <p>Segar dan sehat dengan dressing spesial.</p>
+      </div>
+    
+      <div class="menu-item small">
+        <img src="https://source.unsplash.com/250x150/?satay" alt="Sate">
+        <h4>Piring</h4>
+        <p>Daging lezat dengan sambal khas lombok.</p>
+      </div>
+    
+      <div class="menu-item medium">
+        <img src="https://source.unsplash.com/250x150/?chicken-soup" alt="Ayam">
+        <h4>Kipas Angin</h4>
+        <p>Hangat dan cocok untuk semua cuaca.</p>
+      </div>
+    
+      <div class="menu-item medium">
+        <img src="https://source.unsplash.com/250x150/?dessert" alt="Dessert">
+        <h4>Helm</h4>
+        <p>Lembut dan manis, penutup yang sempurna.</p>
+      </div>
+
+      <div class="menu-item large">
+        <img src="https://source.unsplash.com/250x150/?pizza" alt="Pizza">
+        <h4>Kasur</h4>
+        <p>Keju leleh yang menggoda selera.</p>
+      </div>
+
+      <div class="menu-item large">
+        <img src="https://source.unsplash.com/250x150/?burger" alt="Burger">
+        <h4>lemari</h4>
+        <p>Roti lembut dengan daging juicy.</p>
+      </div>
+    </div>
+    <script>
+      function filterMenu(category) {
+        const items = document.querySelectorAll('.menu-item');
+        const buttons = document.querySelectorAll('.kategori button');
+    
+        // Aktifkan tombol yang ditekan
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+    
+        // Tampilkan/ sembunyikan item
+        items.forEach(item => {
+          if (category === 'all' || item.classList.contains(category)) {
+            item.classList.remove('hidden');
+          } else {
+            item.classList.add('hidden');
+          }
+        });
+      }
+    </script>
+ </main>
+
+
+
+
+
+</body>
+</html>

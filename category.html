@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kategori</title>
+  <link href="assets/img/blog/logobiru.png" rel="icon">
+  <style>
+    :root {
+      --background-color: #E5E7EB;   /* Cool Gray - latar belakang utama */
+      --default-color: #1E293B;      /* Slate Gray - teks utama */
+      --heading-color: #003366;      /* Lebih gelap dari aksen untuk kesan tegas namun selaras */
+      --accent-color: linear-gradient(to right, #003366, #004080, #0059b3, #0073e6); /* Teal gelap - aksen utama */
+      --hover-color: #0073e6;        /* Teal lebih gelap untuk efek hover */
+      --surface-color: #F1F5F9;      /* Light Gray - latar belakang untuk card */
+      --contrast-color: #f9ffff;     /* Hitam pekat - untuk teks kontras tinggi */
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: var(--background-color);
+      padding: 20px;
+      margin: 0;
+      color: var(--default-color);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--heading-color);
+    }
+
+    .filter-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      overflow-x: auto;
+      padding: 10px;
+    }
+
+    .filter-buttons button {
+      padding: 10px 15px;
+      border: 2px solid var(--hover-color);
+      background-color: white;
+      color: var(--hover-color);
+      border-radius: 8px;
+      cursor: pointer;
+      min-width: 80px;
+      font-weight: bold;
+    }
+
+    .filter-buttons button.active {
+      background: var(--hover-color);
+      color: white;
+    }
+
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 1140px; /* Bisa disesuaikan, ini contoh umum */
+      margin: auto; /* Tengah secara horizontal */
+    }
+
+    .card {
+      background: var(--surface-color);
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      text-align: center;
+      padding: 15px;
+      color: var(--default-color);
+    }
+
+    .card img {
+      width: 80%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .card h3 {
+      margin: 10px 0 5px;
+      font-size: 1.1em;
+    }
+
+    .card p {
+      color: #555;
+      font-size: 0.9em;
+    }
+
+@media (max-width: 500px) {
+  .filter-buttons {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+}
+
+    .notes-container {
+    max-width: 1065px;
+    margin: 20px auto;
+    padding: 20px 30px;
+    background: var(--background-color);
+    position: relative;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgb(0 0 0 / 0.1);
+  }
+
+  /* Border Animasi: menggunakan ::before dan ::after dengan animasi moving gradient */
+  .notes-container::before,
+  .notes-container::after {
+    content: "";
+    position: absolute;
+    border-radius: 8px;
+    pointer-events: none;
+  }
+
+  .notes-container::before {
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(270deg, #001F3F, #0074D9, #7FDBFF, #FF4136, #FFDC00);
+    background-size: 1000% 1000%;
+    animation: gradientMove 10s linear infinite;
+    z-index: 1;
+  }
+
+  .notes-container::after {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--surface-color);
+    color: var(--default-color);
+    z-index: 2;
+  }
+
+  /* Text di dalam notes */
+  .notes-text {
+    position: relative;
+    z-index: 3;
+    font-size: 0.90rem;
+    color: var(--default-color);
+  }
+
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+
+  @keyframes dashmove {
+    to {
+      border-spacing: 100px;
+    }
+  }
+
+  /* Order Container */
+.order-container {
+  max-width: 1065px;
+  margin: 20px auto;
+  padding: 30px 30px;
+  background: var(--accent-color); /* disamakan dengan notes */
+  border-radius: 8px; /* disamakan juga */
+  box-shadow: 0 0 10px rgb(0 0 0 / 0.1); /* sama persis */
+  text-align: center;
+}
+
+.order-container h2 {
+  font-size: 28px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.order-container p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.btn-order {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 30px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-order:hover {
+  background-color: #0056b3;
+}
+    
+  </style>
+</head>
+<body>
+  <h1>Kategori Produk</h1>
+  <div class="filter-buttons">
+    <button class="active" onclick="filterCards(event, 'all')">Semua</button>
+    <button onclick="filterCards(event, 'small')">Small</button>
+    <button onclick="filterCards(event, 'medium')">Medium</button>
+    <button onclick="filterCards(event, 'large')">Large</button>
+  </div>
+
+<div class="container">
+    
+  <div class="cards-container px-5 py-5">
+    <div class="card" data-category="small">
+      <img src="/assets/img/gambar/book.png" alt="Small Product" />
+      <h3>Buku</h3>
+      <p>Rp.2000/hari</p>
+    </div>
+
+    <div class="card" data-category="medium">
+      <img src="/assets/img/nitipin/mediem.png" alt="Medium Product" />
+      <h3>Printer</h3>
+      <p>Rp.3000/hari</p>
+    </div>
+
+    <div class="card" data-category="large">
+      <img src="/assets/img/gambar/lemari.png" alt="Large Product" />
+      <h3>Lemari</h3>
+      <p>Rp.4000/hari</p>
+    </div>
+
+    <div class="card" data-category="small">
+      <img src="/assets/img/gambar/book.png" alt="Small Product" />
+      <h3>Buku</h3>
+      <p>Rp.2000/hari</p>
+    </div>
+
+     <div class="card" data-category="medium">
+      <img src="/assets/img/nitipin/mediem.png" alt="Medium Product" />
+      <h3>Printer</h3>
+      <p>Rp.3000/hari</p>
+    </div>
+
+    <div class="card" data-category="large">
+      <img src="/assets/img/gambar/lemari.png" alt="Large Product" />
+      <h3>Lemari</h3>
+      <p>Rp.4000/hari</p>
+    </div>
+    
+    <div class="card" data-category="medium">
+      <img src="/assets/img/nitipin/mediem.png" alt="Medium Product" />
+      <h3>Printer</h3>
+      <p>Rp.3000/hari</p>
+    </div>
+
+    <div class="card" data-category="large">
+      <img src="/assets/img/gambar/lemari.png" alt="Large Product" />
+      <h3>Lemari</h3>
+      <p>Rp.4000/hari</p>
+    </div>
+  </div>
+
+  <div class="notes-container">
+    <div class="notes-text">
+        <ul>
+          <li>Harga sewaktu-waktu dapat berubah</li>
+          <li>Harga belum termasuk perawatan khusus menggunakan produk tertentu</li>
+          <li>Free antar jemput min. sewa 2 hari</li>
+          <li>Sewa 1 hari akan dikenakan cas antar jemput min. 30k, tergantung lokasi tujuan antar jemput</li>
+         <li>Barang terjamin aman</li>
+         <li>Jika barang belum masuk di kategori silahkan menghubungi admin</li>
+      </ul>
+    </div>
+ </div>
+
+    <!-- Order Container -->
+  <div class="order-container">
+    <h2 style="color: var(--surface-color);">Ready to Order?</h2>
+    <p style="color: var(--surface-color);">Click the button below to place your order.</p>
+    <a href="form.php" class="btn-order">Order Now</a>
+  </div>
+    
+
+
+  <script>
+    function filterCards(event, category) {
+      const cards = document.querySelectorAll('.card');
+      const buttons = document.querySelectorAll('.filter-buttons button');
+
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      cards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+ 
+  </script>
+</body>
+</html>
